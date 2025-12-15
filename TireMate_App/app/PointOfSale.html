@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบขายหน้าร้าน (POS) - Tire Shop System</title>
+    
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Blue 600
+                        secondary: '#475569', // Slate 600
+                        brand: '#F97316', // Orange 500
+                        dark: '#0F172A', // Slate 900
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Animation for FIFO items */
+        .fifo-item {
+            animation: slideIn 0.3s ease-out forwards;
+        }
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(10px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 antialiased h-screen flex flex-col">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm border-b border-slate-200 z-50 flex-none">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layers" class="text-primary h-8 w-8"></i>
+                    <span class="font-semibold text-xl tracking-tight text-slate-900">TirePOS</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <span class="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm font-medium border border-green-200 flex items-center gap-1">
+                        <i data-lucide="wifi" class="w-3 h-3"></i> ออนไลน์
+                    </span>
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-medium text-slate-900">สมชาย ขายดี</p>
+                        <p class="text-xs text-slate-500">สาขารามอินทรา</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Layout -->
+    <div class="flex-1 max-w-7xl mx-auto w-full p-4 sm:p-6 lg:p-8 flex flex-col lg:flex-row gap-6 overflow-hidden">
+        
+        <!-- LEFT COLUMN: Input & Cart (Scrollable) -->
+        <div class="flex-1 flex flex-col gap-6 overflow-y-auto pr-2 pb-20 lg:pb-0">
+            
+            <!-- 1. Customer Info -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex-none">
+                <div class="flex items-center gap-2 mb-3 text-slate-800 font-semibold border-b pb-2">
+                    <i data-lucide="user" class="w-5 h-5 text-primary"></i> ข้อมูลลูกค้า
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div class="relative">
+                        <label class="text-xs text-slate-500 mb-1 block">เบอร์โทรศัพท์ / ชื่อลูกค้า</label>
+                        <div class="relative">
+                            <input type="text" value="081-234-5678" class="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-300 rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary">
+                            <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-2.5"></i>
+                        </div>
+                    </div>
+                    <div>
+                        <label class="text-xs text-slate-500 mb-1 block">ชื่อที่แสดง</label>
+                        <input type="text" value="คุณวิชัย รักรถ" readonly class="w-full px-3 py-2 bg-slate-100 border border-slate-200 rounded-lg text-sm text-slate-600">
+                    </div>
+                    <!-- Car Info -->
+                    <div class="md:col-span-2 flex gap-3 text-xs text-slate-500 mt-1">
+                        <span class="bg-slate-100 px-2 py-1 rounded">🚗 Toyota Fortuner</span>
+                        <span class="bg-slate-100 px-2 py-1 rounded">ทะเบียน 1กข-9999</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 2. Product Search & Selection -->
+            <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 flex-none relative z-20">
+                <div class="flex items-center gap-2 mb-3 text-slate-800 font-semibold border-b pb-2">
+                    <i data-lucide="search" class="w-5 h-5 text-brand"></i> เลือกสินค้า
+                </div>
+                
+                <div class="space-y-4">
+                    <!-- Search Input -->
+                    <div class="relative">
+                         <input type="text" placeholder="พิมพ์ชื่อรุ่น, ขนาด (เช่น 265/60)" class="w-full pl-10 pr-4 py-3 bg-white border border-slate-300 rounded-lg text-sm focus:ring-2 focus:ring-primary focus:border-primary shadow-sm">
+                         <i data-lucide="scan-barcode" class="w-5 h-5 text-slate-400 absolute left-3 top-3"></i>
+                         <!-- Mock Dropdown Result -->
+                         <div class="absolute w-full mt-1 bg-white border border-slate-200 rounded-lg shadow-xl z-50 hidden" id="searchDropdown">
+                             <!-- Items would go here -->
+                         </div>
+                    </div>
+
+                    <!-- Selected Item Display (Mocking a selected state) -->
+                    <div class="bg-blue-50/50 border border-blue-100 rounded-lg p-3 flex flex-col sm:flex-row items-start sm:items-center gap-4">
+                        <div class="h-16 w-16 bg-white rounded-md border border-slate-200 flex items-center justify-center flex-none">
+                            <i data-lucide="disc" class="w-10 h-10 text-slate-400"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="font-bold text-slate-900">Bridgestone Turanza T005A</h3>
+                            <p class="text-sm text-slate-500">265/60R18 • Standard</p>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-medium">มีในสต็อก 12 เส้น</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-3 mt-2 sm:mt-0">
+                            <div class="text-right mr-2">
+                                <div class="text-xs text-slate-500">ราคา/เส้น</div>
+                                <div class="font-bold text-slate-900">฿5,200</div>
+                            </div>
+                            <div class="flex items-center border border-slate-300 rounded-lg bg-white">
+                                <button class="px-3 py-1 hover:bg-slate-50 text-slate-600 rounded-l-lg" onclick="updateQty(-1)"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                                <input type="number" id="qtyInput" value="4" class="w-12 text-center border-x border-slate-200 py-1 text-sm font-bold" readonly>
+                                <button class="px-3 py-1 hover:bg-slate-50 text-slate-600 rounded-r-lg" onclick="updateQty(1)"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Current Cart (Table) -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 flex-1 overflow-hidden flex flex-col">
+                <div class="p-4 bg-slate-50 border-b border-slate-200 flex justify-between items-center">
+                    <span class="font-semibold text-slate-700 flex items-center gap-2"><i data-lucide="shopping-cart" class="w-4 h-4"></i> รายการขาย (1)</span>
+                    <button class="text-xs text-red-600 hover:text-red-700 underline">ล้างตะกร้า</button>
+                </div>
+                <div class="flex-1 overflow-y-auto">
+                    <table class="w-full text-sm text-left">
+                        <thead class="bg-white text-slate-500 sticky top-0 shadow-sm">
+                            <tr>
+                                <th class="px-4 py-3 font-medium">สินค้า</th>
+                                <th class="px-4 py-3 text-center w-20">จำนวน</th>
+                                <th class="px-4 py-3 text-right">รวม</th>
+                                <th class="px-4 py-3 w-10"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-100">
+                            <tr class="hover:bg-slate-50">
+                                <td class="px-4 py-3">
+                                    <div class="font-medium text-slate-900">265/60R18 BS T005A</div>
+                                    <div class="text-xs text-slate-400">ตัดสต็อกอัตโนมัติ (FIFO)</div>
+                                </td>
+                                <td class="px-4 py-3 text-center font-bold">4</td>
+                                <td class="px-4 py-3 text-right font-medium">20,800</td>
+                                <td class="px-4 py-3 text-center text-slate-300 hover:text-red-500 cursor-pointer">
+                                    <i data-lucide="trash-2" class="w-4 h-4"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN: FIFO Logic & Payment (Fixed/Sticky on Desktop) -->
+        <div class="lg:w-96 flex flex-col gap-4">
+            
+            <!-- A. FIFO Intelligence Box (The Highlight) -->
+            <div class="bg-slate-900 rounded-xl shadow-lg text-white p-5 relative overflow-hidden">
+                <!-- Decorative BG -->
+                <div class="absolute top-0 right-0 -mr-4 -mt-4 opacity-10">
+                    <i data-lucide="cpu" class="w-24 h-24"></i>
+                </div>
+
+                <h3 class="font-bold text-lg mb-1 flex items-center gap-2 text-brand">
+                    <i data-lucide="sparkles" class="w-5 h-5"></i> ระบบคำนวณสต็อก
+                </h3>
+                <p class="text-slate-400 text-xs mb-4">กำลังคำนวณการตัดของตามลำดับ FIFO...</p>
+                
+                <div class="space-y-3 relative z-10" id="fifoPreview">
+                    <!-- Lot 1 -->
+                    <div class="fifo-item bg-slate-800/50 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
+                        <div>
+                            <div class="text-xs text-slate-400 mb-1">ลำดับที่ 1 (เก่าสุด)</div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">🇯🇵</span>
+                                <span class="font-medium text-sm">ปี 23 / W45</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-slate-400">ตัดสต็อก</div>
+                            <div class="text-xl font-bold text-brand">2 <span class="text-xs text-slate-500 font-normal">เส้น</span></div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lot 2 -->
+                    <div class="fifo-item bg-slate-800/50 p-3 rounded-lg border border-slate-700 flex justify-between items-center">
+                        <div>
+                            <div class="text-xs text-slate-400 mb-1">ลำดับที่ 2</div>
+                            <div class="flex items-center gap-2">
+                                <span class="text-lg">🇹🇭</span>
+                                <span class="font-medium text-sm">ปี 24 / W10</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-xs text-slate-400">ตัดสต็อก</div>
+                            <div class="text-xl font-bold text-white">2 <span class="text-xs text-slate-500 font-normal">เส้น</span></div>
+                        </div>
+                    </div>
+
+                    <!-- Warehouse Location Hint -->
+                    <div class="mt-3 pt-3 border-t border-slate-700/50 flex items-start gap-2 text-xs text-yellow-500/80">
+                        <i data-lucide="map-pin" class="w-4 h-4 flex-none"></i>
+                        <span>พิกัด: โซน A (ชั้น 2) และ โซน B (ชั้น 1)</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- B. Payment Summary -->
+            <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 flex-1 flex flex-col justify-end">
+                <div class="space-y-3 mb-6">
+                    <div class="flex justify-between text-sm text-slate-600">
+                        <span>ยอดรวมสินค้า (4 ชิ้น)</span>
+                        <span>20,800.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-slate-600">
+                        <span>ส่วนลดท้ายบิล</span>
+                        <span class="text-red-500">- 0.00</span>
+                    </div>
+                    <div class="flex justify-between text-sm text-slate-600">
+                        <span>ภาษีมูลค่าเพิ่ม (7%)</span>
+                        <span>1,456.00</span>
+                    </div>
+                    <div class="pt-4 border-t border-slate-100 flex justify-between items-end">
+                        <span class="text-slate-800 font-bold">ยอดสุทธิ</span>
+                        <span class="text-3xl font-bold text-primary">22,256</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <button class="col-span-1 py-3 rounded-lg border border-slate-300 text-slate-700 font-medium hover:bg-slate-50 transition-colors">
+                        พักบิล
+                    </button>
+                    <button class="col-span-1 py-3 rounded-lg bg-green-600 text-white font-medium hover:bg-green-700 transition-colors flex justify-center items-center gap-2">
+                        <i data-lucide="credit-card" class="w-4 h-4"></i> รับเงิน
+                    </button>
+                    <button class="col-span-2 py-4 rounded-lg bg-slate-900 text-white font-bold text-lg hover:bg-slate-800 shadow-lg shadow-slate-900/20 transition-all active:scale-95 flex justify-center items-center gap-2">
+                        <i data-lucide="printer" class="w-5 h-5"></i> บันทึกและพิมพ์ใบเสร็จ
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Simple script to demonstrate Qty change visual logic
+        function updateQty(change) {
+            const input = document.getElementById('qtyInput');
+            let val = parseInt(input.value) + change;
+            if(val < 1) val = 1;
+            input.value = val;
+            
+            // In a real app, this would trigger a re-calculation of the FIFO logic box
+            // For demo: Visual shake or highlight could be added
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ชำระเงินสำเร็จ - Tire Shop</title>
+    
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Blue 600
+                        success: '#16A34A', // Green 600
+                    },
+                    animation: {
+                        'bounce-slow': 'bounce 3s infinite',
+                        'fade-in-up': 'fadeInUp 0.5s ease-out forwards',
+                        'scale-in': 'scaleIn 0.5s ease-out forwards',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        scaleIn: {
+                            '0%': { opacity: '0', transform: 'scale(0.5)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-white text-slate-800 antialiased font-sans h-screen flex flex-col items-center justify-center p-6 relative overflow-hidden">
+
+    <!-- Background Decoration -->
+    <div class="absolute top-0 left-0 w-full h-1/2 bg-blue-50/50 -skew-y-6 transform -translate-y-12 -z-10"></div>
+
+    <!-- Success Content -->
+    <div class="text-center max-w-sm w-full space-y-6">
+        
+        <!-- Animated Icon -->
+        <div class="relative flex justify-center animate-scale-in">
+            <div class="w-24 h-24 bg-green-100 rounded-full flex items-center justify-center mb-2 shadow-sm">
+                <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center shadow-lg shadow-green-500/30">
+                    <i data-lucide="check" class="w-10 h-10 text-white stroke-[3]"></i>
+                </div>
+            </div>
+            <!-- Confetti Decors -->
+            <div class="absolute top-0 right-10 text-yellow-400 animate-bounce-slow" style="animation-delay: 0.1s">✦</div>
+            <div class="absolute bottom-0 left-10 text-blue-400 animate-bounce-slow" style="animation-delay: 0.3s">●</div>
+            <div class="absolute top-4 left-4 text-red-400 animate-bounce-slow" style="animation-delay: 0.5s">★</div>
+        </div>
+
+        <!-- Text Message -->
+        <div class="space-y-2 animate-fade-in-up" style="animation-delay: 0.2s">
+            <h1 class="text-2xl font-bold text-slate-800">แจ้งชำระเงินเรียบร้อย!</h1>
+            <p class="text-slate-500 text-sm leading-relaxed">
+                ระบบได้รับหลักฐานการโอนเงินของท่านแล้ว<br>
+                กรุณารอการตรวจสอบสักครู่
+            </p>
+        </div>
+
+        <!-- Order Reference Card -->
+        <div class="bg-gray-50 rounded-xl p-4 border border-gray-100 animate-fade-in-up text-left space-y-3 shadow-sm" style="animation-delay: 0.4s">
+            <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500">เลขที่คำสั่งซื้อ</span>
+                <span class="font-medium text-slate-900">#ORD-251214-001</span>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+                <span class="text-slate-500">วันที่ทำรายการ</span>
+                <span class="font-medium text-slate-900">14 ธ.ค. 68, 10:45</span>
+            </div>
+            <div class="border-t border-gray-200 pt-2 flex justify-between items-center">
+                <span class="text-slate-500 text-sm">สถานะ</span>
+                <span class="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full font-bold flex items-center gap-1">
+                    <i data-lucide="loader-2" class="w-3 h-3 animate-spin"></i> รอตรวจสอบ
+                </span>
+            </div>
+        </div>
+
+        <!-- Timeline / Next Steps -->
+        <div class="pt-4 animate-fade-in-up" style="animation-delay: 0.6s">
+             <div class="flex items-center gap-3 text-left">
+                <div class="flex flex-col items-center">
+                    <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                    <div class="w-0.5 h-8 bg-gray-200"></div>
+                    <div class="w-2 h-2 rounded-full bg-gray-300"></div>
+                </div>
+                <div class="space-y-4 -mt-1">
+                    <div>
+                        <p class="text-xs font-bold text-slate-800">แจ้งโอนสำเร็จ (ตอนนี้)</p>
+                        <p class="text-[10px] text-slate-500">ระบบบันทึกข้อมูลแล้ว</p>
+                    </div>
+                    <div>
+                        <p class="text-xs font-bold text-slate-400">แอดมินยืนยัน (ภายใน 15 นาที)</p>
+                        <p class="text-[10px] text-slate-400">ท่านจะได้รับข้อความแจ้งเตือนผ่าน LINE</p>
+                    </div>
+                </div>
+             </div>
+        </div>
+
+        <!-- Action Button -->
+        <div class="pt-6 animate-fade-in-up" style="animation-delay: 0.8s">
+            <button onclick="closeLiff()" class="w-full bg-slate-900 hover:bg-slate-800 text-white font-medium py-3.5 rounded-xl shadow-lg shadow-slate-900/20 active:scale-95 transition-all">
+                ปิดหน้าต่างและกลับสู่แชท
+            </button>
+        </div>
+
+    </div>
+
+    <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    <script>
+        lucide.createIcons();
+
+        // ฟังก์ชันปิดหน้าต่าง LIFF
+        async function closeLiff() {
+            try {
+                // ถ้าเปิดใน LIFF จริง ให้ปิดหน้าต่าง
+                if (liff.isInClient()) {
+                    liff.closeWindow();
+                } else {
+                    // ถ้าเปิดใน Browser ทั่วไป ให้ปิด Tab หรือแจ้งเตือน
+                    window.close();
+                    alert('กรุณาปิดหน้าต่างนี้เพื่อกลับสู่ไลน์');
+                }
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        // Initialize LIFF (Optional: ใส่ Liff ID ของคุณถ้าต้องการ Test จริง)
+        // liff.init({ liffId: "YOUR-LIFF-ID" });
+    </script>
+</body>
+</html>

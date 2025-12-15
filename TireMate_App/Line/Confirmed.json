@@ -1,0 +1,134 @@
+{
+  "type": "bubble",
+  "size": "kilo",
+  "header": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "ยืนยันการชำระเงินสำเร็จ",
+        "weight": "bold",
+        "color": "#1DB446",
+        "size": "sm"
+      }
+    ],
+    "backgroundColor": "#E7F9EC",
+    "paddingAll": "15px"
+  },
+  "body": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "text",
+        "text": "ขอบคุณครับ! เราได้รับยอดเงินแล้ว",
+        "weight": "bold",
+        "size": "md",
+        "wrap": true
+      },
+      {
+        "type": "text",
+        "text": "สินค้าของคุณกำลังถูกจัดเตรียม",
+        "size": "xs",
+        "color": "#aaaaaa",
+        "wrap": true,
+        "margin": "sm"
+      },
+      {
+        "type": "separator",
+        "margin": "lg"
+      },
+      {
+        "type": "box",
+        "layout": "vertical",
+        "margin": "lg",
+        "spacing": "sm",
+        "contents": [
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "text",
+                "text": "เลขที่คำสั่งซื้อ",
+                "color": "#aaaaaa",
+                "size": "xs",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "#ORD-251214-001",
+                "wrap": true,
+                "color": "#666666",
+                "size": "xs",
+                "flex": 2,
+                "align": "end"
+              }
+            ]
+          },
+          {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "text",
+                "text": "นัดหมาย",
+                "color": "#aaaaaa",
+                "size": "xs",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "15 ธ.ค. 68 (10:00 น.)",
+                "wrap": true,
+                "color": "#666666",
+                "size": "xs",
+                "flex": 2,
+                "align": "end"
+              }
+            ]
+          },
+           {
+            "type": "box",
+            "layout": "baseline",
+            "contents": [
+              {
+                "type": "text",
+                "text": "สาขา",
+                "color": "#aaaaaa",
+                "size": "xs",
+                "flex": 1
+              },
+              {
+                "type": "text",
+                "text": "รามอินทรา",
+                "wrap": true,
+                "color": "#666666",
+                "size": "xs",
+                "flex": 2,
+                "align": "end"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "footer": {
+    "type": "box",
+    "layout": "vertical",
+    "contents": [
+      {
+        "type": "button",
+        "style": "link",
+        "height": "sm",
+        "action": {
+          "type": "uri",
+          "label": "เปิดแผนที่สาขา",
+          "uri": "https://maps.google.com/?q=TireShopRamintra"
+        }
+      }
+    ]
+  }
+}

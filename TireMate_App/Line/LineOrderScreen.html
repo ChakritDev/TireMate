@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ยืนยันการจอง - Tire Shop</title>
+    
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Blue 600
+                        secondary: '#475569', // Slate 600
+                        success: '#16A34A', // Green 600
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-50 text-slate-800 antialiased font-sans pb-24">
+
+    <!-- 1. Header (Mobile App Style) -->
+    <div class="bg-white sticky top-0 z-50 px-4 h-14 flex items-center shadow-sm border-b border-gray-100">
+        <button class="p-2 -ml-2 text-slate-500 hover:text-slate-800">
+            <i data-lucide="x" class="w-6 h-6"></i>
+        </button>
+        <h1 class="font-semibold text-lg flex-1 text-center pr-8">ยืนยันการจอง</h1>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-md mx-auto p-4 space-y-4">
+
+        <!-- 2. Product Summary Card -->
+        <div class="bg-white rounded-xl p-4 shadow-sm border border-gray-100 flex gap-4">
+            <div class="w-20 h-20 bg-gray-100 rounded-lg flex-none overflow-hidden border border-gray-200">
+                 <img src="https://image.makwebeasy.net/makwebeasy/r_600x0/TiV30248P/DefaultData/Bridgestone_Turanza_T005A_1.jpg" 
+                      alt="Tire" 
+                      class="w-full h-full object-cover">
+            </div>
+            <div class="flex-1 min-w-0">
+                <div class="flex justify-between items-start">
+                    <h3 class="font-semibold text-slate-900 truncate">Bridgestone T005A</h3>
+                    <span class="bg-green-100 text-green-700 text-[10px] px-1.5 py-0.5 rounded font-bold whitespace-nowrap">EV Ready</span>
+                </div>
+                <p class="text-sm text-slate-500 mt-0.5">265/60R18</p>
+                <div class="mt-2 flex items-center justify-between">
+                    <span class="text-primary font-bold">฿4,500</span>
+                    <span class="text-xs text-slate-400">/ เส้น</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. Reservation Details Form -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
+            <h2 class="font-medium text-slate-800 flex items-center gap-2 border-b border-gray-100 pb-2">
+                <i data-lucide="clipboard-list" class="w-4 h-4 text-primary"></i> รายละเอียดการจอง
+            </h2>
+
+            <!-- Branch Selection -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">สาขาที่เข้ารับบริการ</label>
+                <div class="relative">
+                    <i data-lucide="map-pin" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                    <select class="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary appearance-none">
+                        <option value="B001" selected>สาขารามอินทรา (มีสินค้า 12)</option>
+                        <option value="B002">สาขาบางนา (เหลือ 2)</option>
+                    </select>
+                    <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400 absolute right-3 top-3 pointer-events-none"></i>
+                </div>
+            </div>
+
+            <!-- Quantity Stepper -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-2">จำนวน (เส้น)</label>
+                <div class="flex items-center justify-between bg-gray-50 rounded-lg border border-gray-200 p-1">
+                    <button onclick="adjustQty(-1)" class="w-10 h-10 flex items-center justify-center bg-white rounded shadow-sm text-slate-600 hover:text-primary active:scale-95 transition-transform">
+                        <i data-lucide="minus" class="w-4 h-4"></i>
+                    </button>
+                    <input type="number" id="qtyInput" value="4" readonly class="w-full text-center bg-transparent font-bold text-slate-900 text-lg focus:outline-none">
+                    <button onclick="adjustQty(1)" class="w-10 h-10 flex items-center justify-center bg-white rounded shadow-sm text-slate-600 hover:text-primary active:scale-95 transition-transform">
+                        <i data-lucide="plus" class="w-4 h-4"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Date/Time Picker -->
+            <div>
+                <label class="block text-sm font-medium text-slate-700 mb-1">วันที่ต้องการเข้าไป</label>
+                <div class="relative">
+                     <i data-lucide="calendar" class="w-4 h-4 text-slate-400 absolute left-3 top-3"></i>
+                    <input type="datetime-local" class="w-full pl-9 pr-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary" value="2025-12-14T10:00">
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. Customer Contact -->
+        <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-100 space-y-4">
+            <h2 class="font-medium text-slate-800 flex items-center gap-2 border-b border-gray-100 pb-2">
+                <i data-lucide="user" class="w-4 h-4 text-primary"></i> ข้อมูลผู้จอง
+            </h2>
+            <div class="grid grid-cols-1 gap-3">
+                <input type="text" placeholder="ชื่อ-นามสกุล" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary">
+                <input type="tel" placeholder="เบอร์โทรศัพท์" value="081-xxx-xxxx" class="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:ring-1 focus:ring-primary focus:border-primary">
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 5. Bottom Sticky Bar -->
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 p-4 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)] z-40">
+        <div class="max-w-md mx-auto flex items-center justify-between gap-4">
+            <div>
+                <p class="text-xs text-slate-500">ยอดสุทธิ (ชำระหน้าร้าน)</p>
+                <p class="text-xl font-bold text-primary" id="totalPriceDisplay">฿18,000</p>
+            </div>
+            <button class="flex-1 bg-slate-900 hover:bg-slate-800 text-white font-medium py-3 rounded-lg shadow-lg shadow-slate-900/20 active:scale-95 transition-all flex justify-center items-center gap-2">
+                ยืนยันการจอง <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+        </div>
+        <!-- Safe Area for iPhone Home Indicator -->
+        <div class="h-1 w-full bg-white"></div>
+    </div>
+
+    <script>
+        // Init Icons
+        lucide.createIcons();
+
+        // Price Logic
+        const UNIT_PRICE = 4500;
+        
+        function adjustQty(change) {
+            const input = document.getElementById('qtyInput');
+            let currentVal = parseInt(input.value);
+            let newVal = currentVal + change;
+
+            // Min Limit = 1, Max Limit = 12 (Stock)
+            if (newVal < 1) newVal = 1;
+            if (newVal > 12) newVal = 12;
+
+            input.value = newVal;
+            updateTotal(newVal);
+        }
+
+        function updateTotal(qty) {
+            const total = qty * UNIT_PRICE;
+            // Format number with commas
+            document.getElementById('totalPriceDisplay').innerText = '฿' + total.toLocaleString();
+        }
+    </script>
+</body>
+</html>

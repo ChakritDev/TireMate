@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เช็คสต็อกสินค้า (Inventory) - Tire Shop System</title>
+    
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Blue 600
+                        secondary: '#475569', // Slate 600
+                        brand: '#F97316', // Orange 500
+                        success: '#16A34A', // Green 600
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <style>
+        /* Custom animation for expanding rows */
+        .detail-row {
+            transition: all 0.3s ease-in-out;
+        }
+        .rotate-icon {
+            transition: transform 0.3s;
+        }
+        .expanded .rotate-icon {
+            transform: rotate(180deg);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layers" class="text-primary h-8 w-8"></i>
+                    <span class="font-semibold text-xl tracking-tight text-slate-900">TireStock System</span>
+                </div>
+                <div class="flex items-center gap-6">
+                    <!-- Nav Links -->
+                    <div class="hidden md:flex gap-6 text-sm font-medium text-slate-500">
+                        <a href="#" class="text-primary flex items-center gap-1"><i data-lucide="box" class="w-4 h-4"></i> สต็อกสินค้า</a>
+                        <a href="#" class="hover:text-slate-900 flex items-center gap-1"><i data-lucide="arrow-left-right" class="w-4 h-4"></i> โอนย้าย</a>
+                        <a href="#" class="hover:text-slate-900 flex items-center gap-1"><i data-lucide="shopping-cart" class="w-4 h-4"></i> การขาย</a>
+                    </div>
+                    <!-- User Profile -->
+                    <div class="flex items-center gap-3 pl-6 border-l border-slate-200">
+                        <div class="text-right hidden sm:block">
+                            <p class="text-sm font-medium text-slate-900">สมชาย ขายดี</p>
+                            <p class="text-xs text-slate-500">สาขารามอินทรา</p>
+                        </div>
+                        <div class="h-9 w-9 rounded-full bg-slate-100 flex items-center justify-center text-slate-600 font-bold border border-slate-200">
+                            S
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Page Header -->
+        <div class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="box" class="text-primary"></i>
+                    รายการสต็อกคงเหลือ (Inventory)
+                </h1>
+                <p class="text-slate-500 text-sm mt-1">ตรวจสอบจำนวนสินค้า ราคาทุน และรายละเอียดราย Lot (FIFO)</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="bg-primary hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition-colors">
+                    <i data-lucide="download" class="w-4 h-4"></i> Export Excel
+                </button>
+                <button class="bg-white border border-slate-300 text-slate-700 hover:bg-slate-50 px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-sm transition-colors">
+                    <i data-lucide="printer" class="w-4 h-4"></i> พิมพ์รายงาน
+                </button>
+            </div>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="bg-white p-4 rounded-xl shadow-sm border border-slate-200 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                <!-- Search Box -->
+                <div class="md:col-span-4 relative">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <i data-lucide="search" class="h-4 w-4 text-slate-400"></i>
+                    </div>
+                    <input type="text" placeholder="ค้นหา SKU, ชื่อรุ่น, ขนาด (เช่น 265/60R18)" class="w-full rounded-lg border-slate-300 pl-10 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                </div>
+                
+                <!-- Filters -->
+                <div class="md:col-span-2">
+                    <select class="w-full rounded-lg border-slate-300 py-2.5 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                        <option value="all">ทุกสาขา</option>
+                        <option value="B001" selected>สาขารามอินทรา</option>
+                        <option value="B002">สาขาบางนา</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <select class="w-full rounded-lg border-slate-300 py-2.5 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                        <option value="">ทุกยี่ห้อ</option>
+                        <option>Bridgestone</option>
+                        <option>Michelin</option>
+                        <option>Yokohama</option>
+                    </select>
+                </div>
+                <div class="md:col-span-2">
+                    <select class="w-full rounded-lg border-slate-300 py-2.5 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm text-slate-600">
+                        <option value="">ประเภททั้งหมด</option>
+                        <option value="EV" class="font-bold text-green-600">⚡ EV Only</option>
+                        <option value="FUEL">Fuel Save</option>
+                        <option value="STD">Standard</option>
+                    </select>
+                </div>
+                
+                <!-- Reset Button -->
+                <div class="md:col-span-2 flex justify-end">
+                    <button class="w-full md:w-auto text-slate-500 hover:text-slate-700 text-sm font-medium px-4 py-2 border border-transparent hover:bg-slate-100 rounded-lg transition-colors">
+                        ล้างตัวกรอง
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Table -->
+        <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-sm text-left">
+                    <thead class="bg-slate-50 border-b border-slate-200 text-xs uppercase text-slate-500 font-semibold">
+                        <tr>
+                            <th class="px-6 py-4 w-10"></th> <!-- Arrow Icon -->
+                            <th class="px-6 py-4">ข้อมูลสินค้า</th>
+                            <th class="px-6 py-4 text-center">ประเภท</th>
+                            <th class="px-6 py-4 text-center">ขนาด</th>
+                            <th class="px-6 py-4 text-right">ราคาขายส่ง</th>
+                            <th class="px-6 py-4 text-center">คงเหลือรวม</th>
+                            <th class="px-6 py-4 text-center">สถานะ</th>
+                            <th class="px-6 py-4 w-20"></th> <!-- Actions -->
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-slate-100">
+                        
+                        <!-- ITEM 1: EV Tire (Expanded Example) -->
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer group expanded bg-blue-50/30" onclick="toggleRow(this)">
+                            <td class="px-6 py-4 text-center text-slate-400">
+                                <i data-lucide="chevron-down" class="w-5 h-5 rotate-icon transform rotate-180"></i>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="h-10 w-10 rounded bg-slate-200 flex-shrink-0 flex items-center justify-center">
+                                        <i data-lucide="disc" class="text-slate-400"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-slate-900">Bridgestone Alenza 001</div>
+                                        <div class="text-xs text-slate-500">SKU: BS-2355519-ALENZA</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-700 border border-green-200">
+                                    <i data-lucide="zap" class="w-3 h-3 fill-current"></i> EV Ready
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-center font-medium text-slate-700">235/55R19</td>
+                            <td class="px-6 py-4 text-right font-medium text-slate-900">฿7,500</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-lg font-bold text-slate-900">12</span> <span class="text-xs text-slate-500">เส้น</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-700">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> ปกติ
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="p-1 text-slate-400 hover:text-primary transition-colors"><i data-lucide="more-vertical" class="w-5 h-5"></i></button>
+                            </td>
+                        </tr>
+                        
+                        <!-- DETAIL ROW 1 (Initially Visible for Demo) -->
+                        <tr class="bg-slate-50/80 detail-row">
+                            <td colspan="8" class="px-6 py-4">
+                                <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm ml-12">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <h4 class="text-xs font-semibold uppercase text-slate-500 flex items-center gap-2">
+                                            <i data-lucide="layers" class="w-4 h-4"></i> รายละเอียดแยกตามล็อต (FIFO)
+                                        </h4>
+                                        <span class="text-xs text-slate-400">เรียงตามลำดับที่ควรขายก่อน</span>
+                                    </div>
+                                    <table class="w-full text-xs text-left">
+                                        <thead class="bg-slate-100 text-slate-500">
+                                            <tr>
+                                                <th class="px-3 py-2 rounded-l-md">Priority</th>
+                                                <th class="px-3 py-2">ประเทศที่ผลิต</th>
+                                                <th class="px-3 py-2">ปี/สัปดาห์ ผลิต</th>
+                                                <th class="px-3 py-2">วันที่รับเข้า</th>
+                                                <th class="px-3 py-2 text-right">ทุน (Cost)</th>
+                                                <th class="px-3 py-2 text-right rounded-r-md">คงเหลือ (เส้น)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            <tr>
+                                                <td class="px-3 py-2 text-brand font-bold">1 (แนะนำ)</td>
+                                                <td class="px-3 py-2 flex items-center gap-2"><span class="text-lg">🇯🇵</span> Japan</td>
+                                                <td class="px-3 py-2 font-medium">Week 45 / 2023</td>
+                                                <td class="px-3 py-2 text-slate-500">10 ม.ค. 2024</td>
+                                                <td class="px-3 py-2 text-right text-slate-600">6,800</td>
+                                                <td class="px-3 py-2 text-right font-bold text-slate-900">2</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="px-3 py-2 text-slate-400">2</td>
+                                                <td class="px-3 py-2 flex items-center gap-2"><span class="text-lg">🇹🇭</span> Thailand</td>
+                                                <td class="px-3 py-2 font-medium">Week 10 / 2024</td>
+                                                <td class="px-3 py-2 text-slate-500">15 มิ.ย. 2024</td>
+                                                <td class="px-3 py-2 text-right text-slate-600">6,500</td>
+                                                <td class="px-3 py-2 text-right font-bold text-slate-900">10</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- ITEM 2: Standard Tire -->
+                        <tr class="hover:bg-slate-50 transition-colors cursor-pointer group" onclick="toggleRow(this)">
+                            <td class="px-6 py-4 text-center text-slate-400">
+                                <i data-lucide="chevron-down" class="w-5 h-5 rotate-icon"></i>
+                            </td>
+                            <td class="px-6 py-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="h-10 w-10 rounded bg-slate-200 flex-shrink-0 flex items-center justify-center">
+                                        <i data-lucide="disc" class="text-slate-400"></i>
+                                    </div>
+                                    <div>
+                                        <div class="font-medium text-slate-900">Michelin Pilot Sport 4</div>
+                                        <div class="text-xs text-slate-500">SKU: MC-2656018-PS4</div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-medium bg-slate-100 text-slate-700 border border-slate-200">
+                                    Standard
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-center font-medium text-slate-700">265/60R18</td>
+                            <td class="px-6 py-4 text-right font-medium text-slate-900">฿5,200</td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="text-lg font-bold text-red-500">2</span> <span class="text-xs text-slate-500">เส้น</span>
+                            </td>
+                            <td class="px-6 py-4 text-center">
+                                <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-700">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span> ใกล้หมด
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <button class="p-1 text-slate-400 hover:text-primary transition-colors"><i data-lucide="more-vertical" class="w-5 h-5"></i></button>
+                            </td>
+                        </tr>
+                        <!-- DETAIL ROW 2 (Hidden) -->
+                        <tr class="bg-slate-50/80 detail-row hidden">
+                            <td colspan="8" class="px-6 py-4">
+                                <div class="bg-white rounded-lg border border-slate-200 p-4 shadow-sm ml-12">
+                                     <div class="flex items-center justify-between mb-3">
+                                        <h4 class="text-xs font-semibold uppercase text-slate-500 flex items-center gap-2">
+                                            <i data-lucide="layers" class="w-4 h-4"></i> รายละเอียดแยกตามล็อต (FIFO)
+                                        </h4>
+                                    </div>
+                                    <table class="w-full text-xs text-left">
+                                        <thead class="bg-slate-100 text-slate-500">
+                                            <tr>
+                                                <th class="px-3 py-2 rounded-l-md">Priority</th>
+                                                <th class="px-3 py-2">ประเทศที่ผลิต</th>
+                                                <th class="px-3 py-2">ปี/สัปดาห์ ผลิต</th>
+                                                <th class="px-3 py-2">วันที่รับเข้า</th>
+                                                <th class="px-3 py-2 text-right">ทุน (Cost)</th>
+                                                <th class="px-3 py-2 text-right rounded-r-md">คงเหลือ (เส้น)</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody class="divide-y divide-slate-100">
+                                            <tr>
+                                                <td class="px-3 py-2 text-brand font-bold">1</td>
+                                                <td class="px-3 py-2 flex items-center gap-2"><span class="text-lg">🇹🇭</span> Thailand</td>
+                                                <td class="px-3 py-2 font-medium">Week 40 / 2024</td>
+                                                <td class="px-3 py-2 text-slate-500">01 ส.ค. 2024</td>
+                                                <td class="px-3 py-2 text-right text-slate-600">4,800</td>
+                                                <td class="px-3 py-2 text-right font-bold text-slate-900">2</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Pagination -->
+            <div class="bg-white px-6 py-4 border-t border-slate-200 flex items-center justify-between">
+                <span class="text-sm text-slate-500">แสดง 1-2 จากทั้งหมด 24 รายการ</span>
+                <div class="flex gap-2">
+                    <button class="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-50" disabled>ก่อนหน้า</button>
+                    <button class="px-3 py-1 border border-slate-300 rounded text-sm text-slate-600 hover:bg-slate-50">ถัดไป</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Toggle Row Function
+        function toggleRow(row) {
+            // Toggle 'expanded' class on the clicked row for visual styling (rotation)
+            row.classList.toggle('expanded');
+            
+            // Highlight background when expanded
+            row.classList.toggle('bg-blue-50/30');
+
+            // Find the next element (which is the detail row)
+            const detailRow = row.nextElementSibling;
+            if (detailRow && detailRow.classList.contains('detail-row')) {
+                detailRow.classList.toggle('hidden');
+            }
+        }
+    </script>
+</body>
+</html>

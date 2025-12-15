@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINE Rich Menu Mockup - Tire Shop</title>
+    
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        line: '#06C755', // LINE Green
+                        chatBg: '#8CABD9', // Standard LINE Chat Background
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 h-screen flex justify-center items-center font-sans">
+
+    <!-- Mobile Device Container -->
+    <div class="w-full max-w-md h-full sm:h-[800px] bg-white sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col relative border-gray-800 sm:border-[10px]">
+        
+        <!-- 1. LINE Header -->
+        <div class="bg-[#232f3e] text-white p-4 flex items-center justify-between shadow z-20">
+            <div class="flex items-center gap-3">
+                <button><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                <div class="font-medium text-lg">TireShop Bot 🤖</div>
+            </div>
+            <div class="flex gap-4">
+                <i data-lucide="search" class="w-5 h-5"></i>
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </div>
+        </div>
+
+        <!-- 2. Chat Area (Scrollable) -->
+        <div class="flex-1 bg-[#8CABD9] p-4 overflow-y-auto space-y-4 pb-40">
+            
+            <!-- Date Divider -->
+            <div class="flex justify-center">
+                <span class="bg-black/10 text-white text-[10px] px-2 py-1 rounded-full">วันนี้</span>
+            </div>
+
+            <!-- Bot Message (Flex Message Mockup) -->
+            <div class="flex items-start gap-2">
+                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden border border-gray-200">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712038.png" alt="Bot" class="w-full h-full object-cover">
+                </div>
+                <!-- Bubble -->
+                <div class="bg-white rounded-xl p-3 shadow-sm max-w-[85%]">
+                    <p class="text-sm text-gray-800 mb-2">สวัสดีครับ! 👋 ยินดีต้อนรับสู่ TireShop สาขารามอินทรา</p>
+                    <p class="text-sm text-gray-800">สนใจเช็คราคายางรุ่นไหน กดเมนูด้านล่างได้เลยครับ 👇</p>
+                </div>
+            </div>
+
+             <!-- User Message -->
+             <div class="flex justify-end items-end gap-2">
+                <div class="flex flex-col items-end">
+                    <div class="bg-[#95EC69] rounded-xl py-2 px-3 shadow-sm max-w-[85%]">
+                        <p class="text-sm text-gray-800">เช็คยาง 265/60R18 ครับ</p>
+                    </div>
+                    <span class="text-[10px] text-white mt-1">10:42</span>
+                </div>
+            </div>
+
+            <!-- Bot Reply (Stock Info) -->
+            <div class="flex items-start gap-2">
+                <div class="w-8 h-8 rounded-full bg-white flex items-center justify-center overflow-hidden border border-gray-200">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712038.png" alt="Bot" class="w-full h-full object-cover">
+                </div>
+                <!-- Flex Message Card -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm w-64 border border-gray-200">
+                    <!-- Hero Image -->
+                    <div class="h-32 bg-gray-100 relative flex items-center justify-center">
+                         <i data-lucide="disc" class="w-16 h-16 text-gray-400"></i>
+                         <span class="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded">Hot Sale</span>
+                    </div>
+                    <!-- Body -->
+                    <div class="p-3">
+                        <h3 class="font-bold text-gray-800">Bridgestone T005A</h3>
+                        <p class="text-xs text-gray-500 mb-2">ขนาด: 265/60R18 (Standard)</p>
+                        
+                        <div class="flex justify-between items-end mb-3">
+                            <div>
+                                <span class="text-xs text-gray-400 line-through">฿5,200</span>
+                                <div class="text-lg font-bold text-blue-600">฿4,500</div>
+                            </div>
+                            <div class="text-right">
+                                <div class="text-[10px] text-gray-500">รามอินทรา</div>
+                                <div class="text-xs font-bold text-green-600">✅ มีของ (12)</div>
+                            </div>
+                        </div>
+                        
+                        <button class="w-full bg-blue-600 text-white text-sm font-medium py-1.5 rounded-lg mb-1">สั่งจองเลย</button>
+                        <button class="w-full text-blue-600 text-sm font-medium py-1.5">โทรสอบถาม</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 3. Rich Menu Area (Bottom Fixed) -->
+        <div class="absolute bottom-0 w-full bg-gray-100 border-t border-gray-300 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.1)] z-30">
+            <!-- Menu Bar Toggle -->
+            <div class="bg-gray-200/80 backdrop-blur-sm py-1 flex justify-center cursor-pointer hover:bg-gray-300 transition-colors">
+                <div class="w-12 h-1 bg-gray-400 rounded-full"></div>
+            </div>
+
+            <!-- Grid Layout 3x2 -->
+            <div class="grid grid-cols-3 grid-rows-2 h-[280px] sm:h-[300px] bg-white">
+                
+                <!-- Item 1: Check Stock (Big) - Spans 2 cols -->
+                <div class="col-span-2 row-span-1 border-r border-b border-gray-200 relative group cursor-pointer hover:bg-blue-50 transition-colors">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                        <div class="p-3 bg-blue-100 rounded-full text-blue-600 group-hover:scale-110 transition-transform">
+                            <i data-lucide="search" class="w-8 h-8"></i>
+                        </div>
+                        <span class="font-bold text-gray-700 text-lg">เช็คสต็อก / ราคา</span>
+                        <span class="text-[10px] text-gray-400">ค้นหาด่วน 24 ชม.</span>
+                    </div>
+                </div>
+
+                <!-- Item 2: Promotion -->
+                <div class="col-span-1 row-span-1 border-b border-gray-200 relative group cursor-pointer hover:bg-red-50 transition-colors">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                        <i data-lucide="tag" class="w-7 h-7 text-red-500 group-hover:rotate-12 transition-transform"></i>
+                        <span class="font-medium text-gray-700 text-sm">โปรโมชั่น</span>
+                    </div>
+                    <!-- Badge -->
+                    <div class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full animate-ping"></div>
+                    <div class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full"></div>
+                </div>
+
+                <!-- Item 3: Branch Info -->
+                <div class="col-span-1 row-span-1 border-r border-gray-200 relative group cursor-pointer hover:bg-green-50 transition-colors">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-green-600 group-hover:-translate-y-1 transition-transform"></i>
+                        <span class="font-medium text-gray-700 text-xs">สาขา/แผนที่</span>
+                    </div>
+                </div>
+
+                <!-- Item 4: Contact Staff -->
+                <div class="col-span-1 row-span-1 border-r border-gray-200 relative group cursor-pointer hover:bg-orange-50 transition-colors">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                        <i data-lucide="phone" class="w-6 h-6 text-orange-500 group-hover:rotate-12 transition-transform"></i>
+                        <span class="font-medium text-gray-700 text-xs">ติดต่อพนักงาน</span>
+                    </div>
+                </div>
+
+                <!-- Item 5: Admin Login -->
+                <div class="col-span-1 row-span-1 relative group cursor-pointer hover:bg-gray-50 transition-colors bg-gray-50/50">
+                    <div class="absolute inset-0 flex flex-col items-center justify-center gap-2">
+                        <i data-lucide="shield-check" class="w-6 h-6 text-slate-500 group-hover:text-slate-700 transition-colors"></i>
+                        <span class="font-medium text-slate-600 text-xs">Admin Login</span>
+                    </div>
+                    <!-- Lock Icon overlay -->
+                    <i data-lucide="lock" class="w-3 h-3 text-slate-300 absolute top-2 right-2"></i>
+                </div>
+
+            </div>
+            
+            <!-- Bottom Safe Area (iPhone Home Indicator) -->
+            <div class="h-6 bg-white w-full"></div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

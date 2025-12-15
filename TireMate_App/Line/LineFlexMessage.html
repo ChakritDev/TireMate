@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LINE Flex Message Simulation - Tire Shop</title>
+    
+    <!-- Google Fonts: Kanit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        line: '#06C755', // LINE Green
+                        chatBg: '#8CABD9', // Standard LINE Chat Background
+                        textMain: '#111111',
+                        textSub: '#888888',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-gray-100 h-screen flex justify-center items-center font-sans">
+
+    <!-- Mobile Device Container -->
+    <div class="w-full max-w-md h-full sm:h-[800px] bg-white sm:rounded-3xl shadow-2xl overflow-hidden flex flex-col relative border-gray-800 sm:border-[10px]">
+        
+        <!-- 1. Header (LINE App Style) -->
+        <div class="bg-[#232f3e] text-white p-4 flex items-center justify-between shadow z-20 flex-none">
+            <div class="flex items-center gap-3">
+                <button><i data-lucide="chevron-left" class="w-6 h-6"></i></button>
+                <div class="font-medium text-lg">TireShop Bot 🤖</div>
+            </div>
+            <div class="flex gap-4">
+                <i data-lucide="search" class="w-5 h-5"></i>
+                <i data-lucide="menu" class="w-5 h-5"></i>
+            </div>
+        </div>
+
+        <!-- 2. Chat Area -->
+        <div class="flex-1 bg-[#8CABD9] p-4 overflow-y-auto space-y-4">
+            
+            <!-- User Message -->
+            <div class="flex justify-end items-end gap-2 mb-6">
+                <div class="flex flex-col items-end">
+                    <div class="bg-[#95EC69] rounded-2xl rounded-tr-none py-2.5 px-3.5 shadow-sm max-w-[85%] text-slate-800 text-sm">
+                        เช็คสต็อก 265/60R18 ครับ
+                    </div>
+                    <span class="text-[10px] text-white mt-1 drop-shadow-sm">10:42</span>
+                </div>
+            </div>
+
+            <!-- Bot Message (Flex Message Container) -->
+            <div class="flex items-start gap-2">
+                <!-- Bot Avatar -->
+                <div class="w-10 h-10 rounded-full bg-white flex items-center justify-center overflow-hidden border border-gray-200 shadow-sm flex-none">
+                    <img src="https://cdn-icons-png.flaticon.com/512/4712/4712038.png" alt="Bot" class="w-full h-full object-cover">
+                </div>
+
+                <!-- FLEX BUBBLE STARTS HERE -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-sm w-[280px] sm:w-[300px] flex flex-col">
+                    
+                    <!-- A. HERO (Image) -->
+                    <div class="relative h-48 bg-gray-100">
+                        <!-- Mock Image -->
+                        <img src="https://image.makwebeasy.net/makwebeasy/r_600x0/TiV30248P/DefaultData/Bridgestone_Turanza_T005A_1.jpg" 
+                             alt="Tire" 
+                             class="w-full h-full object-cover"
+                             onerror="this.src='https://placehold.co/600x400/e2e8f0/94a3b8?text=Tire+Image'">
+                        
+                        <!-- Badge: EV Ready -->
+                        <div class="absolute top-0 right-0 m-3 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded-md shadow flex items-center gap-1">
+                            <i data-lucide="zap" class="w-3 h-3 fill-current"></i> EV Ready
+                        </div>
+                    </div>
+
+                    <!-- B. BODY (Content) -->
+                    <div class="p-4 space-y-3">
+                        
+                        <!-- Title Section -->
+                        <div>
+                            <h2 class="text-lg font-bold text-gray-900 leading-tight">Bridgestone Turanza T005A</h2>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="bg-gray-100 text-gray-500 text-[10px] px-1.5 py-0.5 rounded">265/60R18</span>
+                                <span class="bg-blue-50 text-blue-600 text-[10px] px-1.5 py-0.5 rounded font-medium">Standard</span>
+                            </div>
+                        </div>
+
+                        <!-- Price Section -->
+                        <div class="flex justify-between items-end border-b border-gray-100 pb-3">
+                            <div>
+                                <p class="text-[10px] text-gray-400">ราคาขายส่ง</p>
+                                <p class="text-xl font-bold text-blue-600">฿4,500</p>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-[10px] text-gray-400">ราคาหน้าร้าน</p>
+                                <p class="text-xs text-gray-500 line-through">฿5,200</p>
+                            </div>
+                        </div>
+
+                        <!-- Stock Status Section -->
+                        <div class="space-y-2">
+                            <div class="flex items-center gap-1 text-xs text-gray-400 font-medium">
+                                <i data-lucide="map-pin" class="w-3 h-3"></i> สถานะสต็อก
+                            </div>
+                            
+                            <!-- Branch 1: Available (Green) -->
+                            <div class="flex justify-between items-start">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-green-500 shadow-[0_0_4px_rgba(34,197,94,0.6)]"></div>
+                                    <span class="text-xs text-gray-600">สาขารามอินทรา</span>
+                                </div>
+                                <div class="text-right">
+                                    <span class="text-xs font-bold text-green-600">พร้อมส่ง (12)</span>
+                                    <div class="text-[9px] text-gray-400 -mt-0.5">ผลิตไทย ปี 24, ญี่ปุ่น ปี 23</div>
+                                </div>
+                            </div>
+
+                            <!-- Branch 2: Low Stock (Yellow) -->
+                            <div class="flex justify-between items-center">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-yellow-400"></div>
+                                    <span class="text-xs text-gray-600">สาขาบางนา</span>
+                                </div>
+                                <span class="text-xs font-bold text-yellow-600">เหลือน้อย (2)</span>
+                            </div>
+
+                            <!-- Branch 3: Out of Stock (Red) -->
+                            <div class="flex justify-between items-center opacity-60">
+                                <div class="flex items-center gap-2">
+                                    <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                                    <span class="text-xs text-gray-600">สาขาเชียงใหม่</span>
+                                </div>
+                                <span class="text-xs font-bold text-red-500">สินค้าหมด</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- C. FOOTER (Buttons) -->
+                    <div class="p-3 bg-gray-50 grid grid-cols-2 gap-2 border-t border-gray-100">
+                        <button class="col-span-1 bg-blue-600 hover:bg-blue-700 text-white text-sm font-medium py-2 rounded-lg transition-colors shadow-sm">
+                            สั่งจองสินค้า
+                        </button>
+                        <button class="col-span-1 bg-white hover:bg-gray-100 border border-gray-300 text-gray-700 text-sm font-medium py-2 rounded-lg transition-colors flex items-center justify-center gap-1">
+                            <i data-lucide="phone" class="w-3 h-3"></i> โทรหาสาขา
+                        </button>
+                    </div>
+
+                </div>
+                <!-- FLEX BUBBLE ENDS -->
+                
+                <span class="text-[9px] text-white self-end mb-1 drop-shadow-sm">10:42</span>
+            </div>
+
+        </div>
+
+        <!-- 3. Footer (Input Area) -->
+        <div class="bg-white p-2 border-t border-gray-200 flex items-center gap-2 flex-none">
+            <div class="p-2 text-gray-500"><i data-lucide="plus" class="w-6 h-6"></i></div>
+            <div class="p-2 text-gray-500"><i data-lucide="camera" class="w-6 h-6"></i></div>
+            <div class="p-2 text-gray-500"><i data-lucide="image" class="w-6 h-6"></i></div>
+            <div class="flex-1 bg-gray-100 rounded-full h-9 px-3 flex items-center text-sm text-gray-400">
+                Aa
+            </div>
+            <div class="p-2 text-gray-500"><i data-lucide="mic" class="w-5 h-5"></i></div>
+        </div>
+
+    </div>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

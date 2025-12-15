@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบรับสินค้าเข้า (Stock In) - Tire Shop System</title>
+    
+    <!-- Google Fonts: Kanit (ฟอนต์ยอดนิยมสำหรับภาษาไทยดูทันสมัย) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS (CDN) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Kanit', 'sans-serif'],
+                    },
+                    colors: {
+                        primary: '#2563EB', // Blue 600
+                        secondary: '#475569', // Slate 600
+                        brand: '#F97316', // Orange 500 (For Highlight)
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <!-- Icons (Lucide) -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm border-b border-slate-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="layers" class="text-primary h-8 w-8"></i>
+                    <span class="font-semibold text-xl tracking-tight text-slate-900">TireStock System</span>
+                </div>
+                <div class="flex items-center gap-4">
+                    <div class="text-right hidden sm:block">
+                        <p class="text-sm font-medium text-slate-900">สมชาย ขายดี</p>
+                        <p class="text-xs text-slate-500">ผู้จัดการสาขารามอินทรา</p>
+                    </div>
+                    <div class="h-10 w-10 rounded-full bg-primary/10 flex items-center justify-center text-primary font-bold">
+                        S
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        
+        <!-- Header Section -->
+        <div class="mb-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+                <h1 class="text-2xl font-bold text-slate-900 flex items-center gap-2">
+                    <i data-lucide="package-plus" class="text-brand"></i>
+                    รับสินค้าเข้าสต็อก (Stock In)
+                </h1>
+                <p class="text-slate-500 text-sm mt-1">บันทึกรายการยางที่รับเข้าจากโรงงานหรือ Supplier</p>
+            </div>
+            <div class="flex gap-2">
+                <button class="px-4 py-2 bg-white border border-slate-300 text-slate-700 rounded-lg text-sm font-medium hover:bg-slate-50 flex items-center gap-2">
+                    <i data-lucide="history" class="w-4 h-4"></i> ประวัติการรับ
+                </button>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Left Column: Input Form (2/3 width) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Card 1: Document Info -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6">
+                    <h2 class="text-lg font-semibold text-slate-800 mb-4 border-b pb-2">1. ข้อมูลเอกสารรับ</h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">สาขาที่รับของ <span class="text-red-500">*</span></label>
+                            <select class="w-full rounded-lg border-slate-300 bg-slate-50 py-2 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                                <option value="B001" selected>สาขารามอินทรา (HQ)</option>
+                                <option value="B002">สาขาบางนา</option>
+                                <option value="B003">สาขาเชียงใหม่</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">เลขที่ใบส่งของ (Ref No.)</label>
+                            <input type="text" placeholder="เช่น INV-2024-001" class="w-full rounded-lg border-slate-300 py-2 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">วันที่รับของ</label>
+                            <input type="date" class="w-full rounded-lg border-slate-300 py-2 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm" value="2025-12-13">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ผู้จัดส่ง (Supplier)</label>
+                            <select class="w-full rounded-lg border-slate-300 py-2 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                                <option>Bridgestone Thailand</option>
+                                <option>Michelin Siam</option>
+                                <option>Yokohama</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Card 2: Product Detail (Core Feature) -->
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-6 relative overflow-hidden">
+                    <div class="absolute top-0 right-0 p-4 opacity-10">
+                        <i data-lucide="disc" class="w-32 h-32"></i>
+                    </div>
+                    <h2 class="text-lg font-semibold text-slate-800 mb-4 border-b pb-2 relative z-10">2. รายละเอียดสินค้า (Lot Detail)</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 relative z-10">
+                        <!-- Product Selection -->
+                        <div class="md:col-span-2">
+                            <label class="block text-sm font-medium text-slate-700 mb-1">เลือกสินค้า (ยาง) <span class="text-red-500">*</span></label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i data-lucide="search" class="h-4 w-4 text-slate-400"></i>
+                                </div>
+                                <select id="productSelect" class="w-full rounded-lg border-slate-300 pl-10 py-2.5 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm cursor-pointer">
+                                    <option value="">-- พิมพ์ชื่อรุ่น หรือ ขนาด เพื่อค้นหา --</option>
+                                    <option value="T005A-265-60-18">265/60R18 - Bridgestone Turanza T005A (Standard)</option>
+                                    <option value="ALENZA-235-55-19" class="font-bold text-green-700">⚡ 235/55R19 - Bridgestone Alenza 001 (EV Ready)</option>
+                                    <option value="PS4-225-45-17">225/45R17 - Michelin Pilot Sport 4</option>
+                                    <option value="EP300-185-60-15" class="font-bold text-green-700">🌱 185/60R15 - Bridgestone Ecopia EP300 (Fuel Save)</option>
+                                </select>
+                            </div>
+                            <p class="text-xs text-slate-500 mt-1">💡 สินค้าที่มีสัญลักษณ์ ⚡ คือยางสำหรับรถ EV</p>
+                        </div>
+
+                        <!-- Country of Origin (New Field) -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ประเทศที่ผลิต (Origin) <span class="text-red-500">*</span></label>
+                            <select class="w-full rounded-lg border-slate-300 py-2 px-3 text-sm focus:border-primary focus:ring-1 focus:ring-primary shadow-sm bg-blue-50/30 border-blue-200">
+                                <option value="TH">🇹🇭 Thailand (ไทย)</option>
+                                <option value="JP">🇯🇵 Japan (ญี่ปุ่น)</option>
+                                <option value="ID">🇮🇩 Indonesia (อินโดนีเซีย)</option>
+                                <option value="VN">🇻🇳 Vietnam (เวียดนาม)</option>
+                                <option value="CN">🇨🇳 China (จีน)</option>
+                            </select>
+                        </div>
+
+                        <!-- Production Week/Year -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">สัปดาห์/ปี ที่ผลิต (Week/Year) <span class="text-red-500">*</span></label>
+                            <div class="flex gap-2">
+                                <input type="number" placeholder="WW" min="1" max="52" class="w-1/3 rounded-lg border-slate-300 py-2 px-3 text-sm text-center focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                                <span class="self-center text-slate-400">/</span>
+                                <input type="number" placeholder="YYYY" min="2020" max="2030" class="w-2/3 rounded-lg border-slate-300 py-2 px-3 text-sm text-center focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                            </div>
+                        </div>
+
+                        <!-- Cost & Quantity -->
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">ราคาทุนต่อเส้น (บาท)</label>
+                            <input type="number" id="costInput" value="4500" class="w-full rounded-lg border-slate-300 py-2 px-3 text-sm text-right focus:border-primary focus:ring-1 focus:ring-primary shadow-sm">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-slate-700 mb-1">จำนวนรับเข้า (เส้น)</label>
+                            <div class="flex items-center">
+                                <button onclick="adjustQty(-1)" class="p-2 border border-slate-300 rounded-l-lg hover:bg-slate-100 bg-white"><i data-lucide="minus" class="w-4 h-4"></i></button>
+                                <input type="number" id="qtyInput" value="4" class="w-full border-y border-slate-300 py-2 px-3 text-sm text-center focus:border-primary focus:ring-1 focus:ring-primary shadow-sm h-full">
+                                <button onclick="adjustQty(1)" class="p-2 border border-slate-300 rounded-r-lg hover:bg-slate-100 bg-white"><i data-lucide="plus" class="w-4 h-4"></i></button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    <div class="mt-6 flex justify-end">
+                        <button onclick="addToTable()" class="bg-slate-900 hover:bg-slate-800 text-white px-6 py-2.5 rounded-lg text-sm font-medium flex items-center gap-2 shadow-lg shadow-slate-900/20 transition-all active:scale-95">
+                            <i data-lucide="plus-circle" class="w-4 h-4"></i> เพิ่มรายการ
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Summary Table (1/3 width) -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-xl shadow-sm border border-slate-200 h-full flex flex-col">
+                    <div class="p-4 border-b bg-slate-50 rounded-t-xl">
+                        <h3 class="font-semibold text-slate-800 flex items-center gap-2">
+                            <i data-lucide="list" class="w-4 h-4 text-slate-500"></i> รายการที่เพิ่มแล้ว
+                        </h3>
+                    </div>
+                    
+                    <!-- Table Container (Scrollable) -->
+                    <div class="flex-1 overflow-auto p-0">
+                        <table class="w-full text-sm text-left">
+                            <thead class="text-xs text-slate-500 uppercase bg-slate-50 sticky top-0">
+                                <tr>
+                                    <th class="px-4 py-3">สินค้า/Lot</th>
+                                    <th class="px-4 py-3 text-right">จำนวน</th>
+                                    <th class="px-4 py-3 text-right">รวมทุน</th>
+                                    <th class="px-2 py-3"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="stockTableBody" class="divide-y divide-slate-100">
+                                <!-- Sample Row 1 -->
+                                <tr class="hover:bg-slate-50 group">
+                                    <td class="px-4 py-3">
+                                        <div class="font-medium text-slate-900">265/60R18 BS T005A</div>
+                                        <div class="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                                            <span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 text-[10px] font-bold">TH</span>
+                                            <span>Lot: 35/2025</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-right font-medium">4</td>
+                                    <td class="px-4 py-3 text-right text-slate-600">18,000</td>
+                                    <td class="px-2 py-3 text-right">
+                                        <button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </td>
+                                </tr>
+                                <!-- Sample Row 2 (EV) -->
+                                <tr class="hover:bg-slate-50 group">
+                                    <td class="px-4 py-3">
+                                        <div class="font-medium text-slate-900 flex items-center gap-1">
+                                            235/55R19 Alenza
+                                            <i data-lucide="zap" class="w-3 h-3 text-green-500 fill-green-500"></i>
+                                        </div>
+                                        <div class="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                                            <span class="px-1.5 py-0.5 rounded bg-red-100 text-red-700 text-[10px] font-bold">JP</span>
+                                            <span>Lot: 12/2025</span>
+                                        </div>
+                                    </td>
+                                    <td class="px-4 py-3 text-right font-medium">2</td>
+                                    <td class="px-4 py-3 text-right text-slate-600">14,000</td>
+                                    <td class="px-2 py-3 text-right">
+                                        <button class="text-slate-400 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-opacity"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                                    </td>
+                                </div>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Summary Footer -->
+                    <div class="p-4 border-t bg-slate-50 rounded-b-xl space-y-3">
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-500">จำนวนรายการ</span>
+                            <span class="font-medium">2 รายการ</span>
+                        </div>
+                        <div class="flex justify-between items-center text-sm">
+                            <span class="text-slate-500">จำนวนเส้นรวม</span>
+                            <span class="font-medium">6 เส้น</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-2 border-t border-slate-200">
+                            <span class="text-slate-900 font-bold">ยอดเงินรวม (ทุน)</span>
+                            <span class="text-brand font-bold text-lg">฿32,000</span>
+                        </div>
+                        <button class="w-full bg-primary hover:bg-blue-700 text-white font-medium py-3 rounded-lg shadow-lg shadow-blue-500/30 transition-all mt-2">
+                            ยืนยันรับเข้าสต็อก
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Initialize Icons
+        lucide.createIcons();
+
+        // Simple Qty Adjust Logic
+        function adjustQty(amount) {
+            const input = document.getElementById('qtyInput');
+            let val = parseInt(input.value);
+            if(isNaN(val)) val = 0;
+            val += amount;
+            if(val < 1) val = 1;
+            input.value = val;
+        }
+
+        // Dummy Add to Table Function (Visual Feedback)
+        function addToTable() {
+            // In real app, validate inputs here
+            const tbody = document.getElementById('stockTableBody');
+            const newRow = `
+             <tr class="hover:bg-slate-50 group bg-green-50/50 transition-colors duration-500">
+                <td class="px-4 py-3">
+                    <div class="font-medium text-slate-900">185/60R15 EP300</div>
+                    <div class="text-xs text-slate-500 flex items-center gap-1 mt-1">
+                        <span class="px-1.5 py-0.5 rounded bg-blue-100 text-blue-700 text-[10px] font-bold">TH</span>
+                        <span>Lot: 40/2025</span>
+                    </div>
+                </td>
+                <td class="px-4 py-3 text-right font-medium">4</td>
+                <td class="px-4 py-3 text-right text-slate-600">8,000</td>
+                <td class="px-2 py-3 text-right">
+                    <button onclick="this.closest('tr').remove()" class="text-slate-400 hover:text-red-500"><i data-lucide="trash-2" class="w-4 h-4"></i></button>
+                </td>
+            </tr>
+            `;
+            tbody.insertAdjacentHTML('beforeend', newRow);
+            lucide.createIcons(); // Re-render icons
+        }
+    </script>
+</body>
+</html>
